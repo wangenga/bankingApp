@@ -1,0 +1,45 @@
+# IntelliJ IDEA & IDE Settings
+.idea/
+*.iml
+*.iws
+*.ipr
+.idea_modules/
+*.workspace
+
+# Eclipse & VS Code settings
+.settings/
+.classpath
+.project
+.factorypath
+.vscode/
+
+# Build Outputs & Compiled Code
+bin/
+out/
+target/
+build/
+.gradle/
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Logs, Temporary & OS Files
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Environment & Sensitive Files
+.env
+*.local
+*.properties
+!src/main/resources/*.properties
