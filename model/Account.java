@@ -53,7 +53,7 @@ public abstract class Account {
     }
 
     // Allows subclasses to update the balance
-     * without exposing it publicly.
+    //  without exposing it publicly.
     protected void setBalance(BigDecimal newBalance) {
         this.balance = newBalance;
     }
@@ -64,17 +64,13 @@ public abstract class Account {
     }
 
     // Validates that an amount is greater than zero, throws InvalidAmountException if invalid
-    private void validatePositiveAmount(BigDecimal amount)
-            throws InvalidAmountException {
-
+    private void validatePositiveAmount(BigDecimal amount) throws InvalidAmountException {
         if (amount == null) {
             throw new InvalidAmountException("Amount cannot be null.");
         }
 
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidAmountException(
-                    "Amount must be greater than zero."
-            );
+            throw new InvalidAmountException("Amount must be greater than zero.");
         }
     }
 }
