@@ -6,12 +6,13 @@ import java.math.BigDecimal;
 public class SavingsAccount extends Account {
 
     // Savings account interest rate.
-    private static final BigDecimal INTEREST_RATE =
-            new BigDecimal("0.01");
+    private static final BigDecimal INTEREST_RATE = new BigDecimal("0.01");
+    private BigDecimal balance; 
 
     // Creates an empty savings account.
-    public SavingsAccount() {
+    public SavingsAccount(BigDecimal balance) {
         super();
+        this.balance = balance;
     }
 
     /**

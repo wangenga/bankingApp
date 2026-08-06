@@ -8,7 +8,7 @@ import java.util.Map;
 public class InvestmentAccount extends Account {
 
     // Represents funds not yet invested
-    private BigDecimal notInvestedBalance;
+    private BigDecimal notInvestedBalance = BigDecimal.ZERO;
 
     // Represents funds invested in specific funds
     private final Map<Fund, BigDecimal> investments;
@@ -24,6 +24,7 @@ public class InvestmentAccount extends Account {
         // Initial total balance calculation
         updateTotalBalance();
     }
+
 
     // Total balance is the sum of notInvestedBalance and all investments
     private void updateTotalBalance() {
