@@ -56,7 +56,7 @@ public class BankingService{
                                     .orElse(null);
 
                 if (currentUser == null){
-                    System.out.println("User not found");
+                    System.out.println("User not found. Please try again.");
                 } else {
                     System.out.println("Welcome, " + currentUser.getName() + "!");
                 }
@@ -65,10 +65,10 @@ public class BankingService{
                 switch (input) {
                     case "1":
                         System.out.println("Savings account balance: $" + currentUser.getSavingsAccount().getBalance());
-                        System.out.println("Investment account balance: $" + currentUser.getInvestmentAccount().getBalance());
+                        System.out.println("Investment account balance:");
     
                         // 2. Show the uninvested cash
-                        System.out.println("  * Not Invested: $" + currentUser.getInvestmentAccount().getNotInvestedBalance());
+                        System.out.println("* Not Invested: $" + currentUser.getInvestmentAccount().getNotInvestedBalance());
                         
                         // 3. Loop through the Map to show active funds
                         Map<Fund, BigDecimal> userInvestments = currentUser.getInvestmentAccount().getInvestments();
@@ -125,8 +125,8 @@ public class BankingService{
                                                 .findAny()
                                                 .orElse(null);
                         if (recipient == null){
-                            System.out.println("User not found");
-                            return;
+                            System.out.println("User not found. Please try again.");
+                            break;
                         }
 
                         if (recipient.getName().equalsIgnoreCase(currentUser.getName())){
@@ -238,7 +238,7 @@ public class BankingService{
                         break;
                 
                     default:
-                        System.out.println("Invalid option. Please try again. ");
+                        System.out.println("Invalid choice. Please try again.");
                         break;
                 }
             }
