@@ -2,7 +2,6 @@ package model;
 
 import exception.InvalidAmountException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public class InvestmentAccount extends Account {
     }
 
     @Override
-    public void deposit(BigDecimal amount) {
+    public void deposit(BigDecimal amount) throws InvalidAmountException {
         validatePositive(amount, "Deposit amount must be positive.");
 
         // Depositing into investment account adds to the notInvestedBalance
@@ -49,7 +48,7 @@ public class InvestmentAccount extends Account {
     }
 
     @Override
-    public void withdraw(BigDecimal amount) {
+    public void withdraw(BigDecimal amount)throws InvalidAmountException {
         validatePositive(amount, "Withdraw amount must be positive.");
 
         if (this.notInvestedBalance.compareTo(amount) < 0) {
@@ -73,7 +72,7 @@ public class InvestmentAccount extends Account {
     }
 
     // Transfer funds from not invested to a specific fund
-    public void invest(Fund fund, BigDecimal amount) {
+    public void invest(Fund fund, BigDecimal amount)throws InvalidAmountException  {
         validatePositive(amount, "Investment amount must be positive.");
 
         if (this.notInvestedBalance.compareTo(amount) < 0) {
@@ -120,7 +119,7 @@ public class InvestmentAccount extends Account {
     }
 
     // Check if number received is positive
-    private void validatePositive(BigDecimal amount, String msg) {
+    private void validatePositive(BigDecimal amount, String msg) throws InvalidAmountException {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new InvalidAmountException(msg);
         }
