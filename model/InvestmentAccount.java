@@ -116,6 +116,7 @@ public class InvestmentAccount extends Account {
 
     // Get total of ALL invested funds and their balances
     public Map<Fund, BigDecimal> getInvestments() {
+        calculateFundGains();
         return investments;
     }
 

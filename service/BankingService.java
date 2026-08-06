@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import exception.InvalidAmountException;
+import model.Fund;
 import model.User;
 
 
@@ -44,10 +46,10 @@ public class BankingService{
                 continue;
             }
 
-            String inputName = scanner.nextLine();
+            String input = scanner.nextLine().trim();
 
             if (currentUser == null){
-                final String searchName = inputName;
+                final String searchName = input;
                 currentUser = userList.stream()
                                     .filter(user -> user.getName().equalsIgnoreCase(searchName.trim()))
                                     .findAny()
@@ -56,38 +58,172 @@ public class BankingService{
                 if (currentUser == null){
                     System.out.println("User not found");
                 } else {
-                    System.out.println("Welcome " + currentUser.getName() + " !");
+                    System.out.println("Welcome, " + currentUser.getName() + " !");
                 }
             } else {
-                int choice = scanner.nextInt();
 
-                switch (choice) {
-                    case 1:
+                switch (input) {
+                    case "1":
                         System.out.println("Savings: $" + currentUser.getSavingsAccount().getBalance());
+                        System.out.println("Investment Total: $" + currentUser.getInvestmentAccount().getBalance());
+    
+                        // 2. Show the uninvested cash
+                        System.out.println("  - Uninvested: $" + currentUser.getInvestmentAccount().getNotInvestedBalance());
+                        
+                        // 3. Loop through the Map to show active funds
+                        Map<Fund, BigDecimal> userInvestments = currentUser.getInvestmentAccount().getInvestments();
                         break;
 
-                    case 2:
+                    case "2":
+                        System.out.print("Enter Amount to deposit to saving Account: $");
+                        String amountInput = scanner.nextLine().trim();
+
+                        try{
+                            BigDecimal depositAmount = new BigDecimal(amountInput);
+                            currentUser.deductCash(depositAmount);
+                            currentUser.getSavingsAccount().deposit(depositAmount);
+                            System.out.println("Deposit Successful.");
+                        } catch (NumberFormatException e){
+                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                        } catch (InvalidAmountException e){
+                            System.out.println(e.getMessage());
+                        }
+                        break;
+                    case "3":
+                        System.out.println("Enter Amount to withdraw from saving Account");
+                        String withdrawInput = scanner.nextLine().trim();
+
+                        try{
+
+                            BigDecimal withdrawAmount = new BigDecimal(withdrawInput);
+
+                            currentUser.getSavingsAccount().withdraw(withdrawAmount);
+
+                            currentUser.addCash(withdrawAmount);
+                            System.out.println("Withdraw Successful.");
+                        } catch (NumberFormatException e){
+                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                        } catch (InvalidAmountException e){
+                            System.out.println(e.getMessage());
+                        }
                         
                         break;
-                    case 3:
+                    case "4":
+                        System.out.println("Enter Name of the person");
+                        String recipientInput = scanner.nextLine().trim();
+
+                        User recipient = userList.stream()
+                                                .filter(user -> user.getName().equalsIgnoreCase(recipientInput))
+                                                .findAny()
+                                                .orElse(null);
+                        if (recipient == null){
+                            System.out.println("User not found");
+                            return;
+                        }
+
+                        if (recipient.getName().equalsIgnoreCase(currentUser.getName())){
+                            System.out.println("You cannot send money to yourself");
+                            break;
+                        }
+
+                        System.out.println("Enter amount: ");
+                        String sendInput = scanner.nextLine().trim();
+
+                        try{
+
+                            BigDecimal sendAmount = new BigDecimal(sendInput);
+
+                            currentUser.getSavingsAccount().withdraw(sendAmount);
+
+                            recipient.getSavingsAccount().deposit(sendAmount);
+                            System.out.println("Money sent successfully");
+                        } catch (NumberFormatException e){
+                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                        } catch (InvalidAmountException e){
+                            System.out.println(e.getMessage());
+                        }
+
+                        break;
+                    case "5":
+                        System.out.println("Available funds: ");
+                        Fund[] allFunds = Fund.values();
+                        for (int i = 0; i < allFunds.length; i++){
+                            System.out.println((i + 1) + ". " + allFunds[i]);
+                        }
+
+                        System.out.println("Select a fund to invest in: ");
+                        String fundChoice = scanner.nextLine();
+
+                        try{
+                            int index = Integer.parseInt(fundChoice);
+                            if (index < 0 || index >= allFunds.length){
+                                System.out.println("Invalid fund choice");
+                                break;
+                            }
+
+                            Fund selectedFund = allFunds[index];
+                            System.out.println("Enter Amount to Invest");
+                            String investInput = scanner.nextLine().trim();
+
+                            BigDecimal investAmount = new BigDecimal(investInput);
+
+                            currentUser.getInvestmentAccount().invest(selectedFund, investAmount);
+
+                            System.out.println("Successfully invested $" + investAmount + " into " + selectedFund + ".");
+                        } catch (NumberFormatException e){
+                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                        } catch (InvalidAmountException e){
+                            System.out.println(e.getMessage());
+ 
+                        }
+
                         
                         break;
-                    case 4:
+                    case "6":
+                        System.out.println("1. Tranfer from Savings to Investment ");
+                        System.out.println("2. Tranfer from Investment to Savings ");
+                        System.out.println("Select direction");
+
+                        String direction = scanner.nextLine().trim();
+
+                        if (!direction.equals("1") && !direction.equals("2")){
+                            System.out.println("Invalid direction");
+                            break;
+                        }
+
+                        System.out.println("Enter amount to tranfer");
+                        String tranferInput = scanner.nextLine().trim();
+
+                        try{
+
+                            BigDecimal tranferAmount = new BigDecimal(tranferInput);
+
+                            if (direction.equals("1")){
+                                currentUser.getSavingsAccount().withdraw(tranferAmount);
+                                currentUser.getInvestmentAccount().deposit(tranferAmount);
+                                System.out.println("Tranfer to Investment Successful");
+
+                            } else if (direction.equals("2")){
+                                currentUser.getInvestmentAccount().withdraw(tranferAmount);
+                                currentUser.getSavingsAccount().deposit(tranferAmount);
+                                System.out.println("Tranfer to Investment Successful");
+                            }
+                        } catch (NumberFormatException e){
+                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                        } catch (InvalidAmountException e){
+                            System.out.println(e.getMessage());
+                        }
+
                         
                         break;
-                    case 5:
-                        
+                    case "7":
+                        currentUser.getInvestmentAccount().withdrawAllInvestments();
+                        System.out.println("All your investments have been withdrawn to your uninvested balance ");
                         break;
-                    case 6:
-                        
-                        break;
-                    case 7:
-                        
-                        break;
-                    case 8:
+                    case "8":
                         currentUser = null;
                         break;
-                    case 9:
+                    case "9":
                         isRunning = false;
                         break;
                 

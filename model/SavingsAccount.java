@@ -1,6 +1,7 @@
 package model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 // Represents a savings account. Every time the balance is viewed,the account earns 1% interest.
 public class SavingsAccount extends Account {
@@ -29,11 +30,9 @@ public class SavingsAccount extends Account {
 
         BigDecimal currentBalance = getCurrentBalance();
 
-        BigDecimal interest =
-                currentBalance.multiply(INTEREST_RATE);
+        BigDecimal interest = currentBalance.multiply(INTEREST_RATE);
 
-        BigDecimal updatedBalance =
-                currentBalance.add(interest);
+        BigDecimal updatedBalance = currentBalance.add(interest).setScale(2, RoundingMode.HALF_UP);
 
         setBalance(updatedBalance);
 

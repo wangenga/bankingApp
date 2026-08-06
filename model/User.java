@@ -2,6 +2,8 @@ package model;
 
 import java.math.BigDecimal;
 
+import exception.InvalidAmountException;
+
 public class User{
     private String name;
     private BigDecimal cash;
@@ -28,8 +30,19 @@ public class User{
         return savingsAccount;
     }
 
-    //public InvestmentAccount getInvestmentAccount(){
-    //    return investmentAccount;
-    //}
+    public void deductCash (BigDecimal amount) throws InvalidAmountException{
+        if (this.cash.compareTo(amount) < 0) {
+            throw new InvalidAmountException("Insufficient Cash");
+        }
+        this.cash = this.cash.subtract(amount);
+    }
+
+    public void addCash (BigDecimal amount){
+        this.cash = this.cash.add(amount);
+    }
+
+    public InvestmentAccount getInvestmentAccount(){
+        return investmentAccount;
+    }
 
 }

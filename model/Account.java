@@ -3,6 +3,7 @@ package model;
 import exception.InvalidAmountException;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Abstract representation of a bank account.
@@ -13,11 +14,11 @@ import java.math.BigDecimal;
 public abstract class Account {
 
     // Current account balance.It is private to preserve encapsulation.
-    private BigDecimal balance;
+    private BigDecimal balance = BigDecimal.ZERO;
 
     // Creates an account with an initial balance of zero.
     public Account() {
-        this.balance = BigDecimal.ZERO;
+        this.balance = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
     }
 
     // Deposits money into this account. throws InvalidAmountException if amount is null or not positive.
@@ -25,7 +26,7 @@ public abstract class Account {
         validatePositiveAmount(amount);
 
         // BigDecimal is immutable, therefore we assign the result.
-        balance = balance.add(amount);
+        balance = balance.add(amount.setScale(2, RoundingMode.HALF_UP));
     }
 
     // Withdraws money from this account. .throws InvalidAmountException if amount is invalid or there are insufficient funds
@@ -49,18 +50,18 @@ public abstract class Account {
      * @return current balance
      */
     public BigDecimal getBalance() {
-        return balance;
+        return balance.setScale(2, RoundingMode.HALF_UP);
     }
 
     // Allows subclasses to update the balance
     // without exposing it publicly.
-    protected void setBalance(BigDecimal newBalance) {
+    public void setBalance(BigDecimal newBalance) {
         this.balance = newBalance;
     }
 
     // Gives subclasses read access to the raw balance. return current balance
     protected BigDecimal getCurrentBalance() {
-        return balance;
+        return balance.setScale(2, RoundingMode.HALF_UP);
     }
 
     // Validates that an amount is greater than zero, throws InvalidAmountException if invalid
