@@ -152,22 +152,32 @@ public class BankingService{
                         }
 
                         System.out.println("Select a fund to invest in: ");
-                        String fundChoice = scanner.nextLine();
+                        String fundChoice = scanner.nextLine().trim();
 
                         try{
                             int index = Integer.parseInt(fundChoice);
-                            if (index < 0 || index >= allFunds.length){
+                            if (index < 1 || index > allFunds.length){
                                 System.out.println("Invalid fund choice");
                                 break;
                             }
 
-                            Fund selectedFund = allFunds[index];
+                            Fund selectedFund = allFunds[index - 1];
                             System.out.println("Enter Amount to Invest");
                             String investInput = scanner.nextLine().trim();
 
                             BigDecimal investAmount = new BigDecimal(investInput);
 
                             currentUser.getInvestmentAccount().invest(selectedFund, investAmount);
+
+                            BigDecimal currentValue =
+                                    currentUser.getInvestmentAccount()
+                                            .getInvestmentBalance(selectedFund);
+
+                            System.out.println(
+                                    "Successfully invested $" + investAmount +
+                                            " into " + selectedFund +
+                                            ". Current investment value: $" + currentValue
+                            );
 
                             System.out.println("Successfully invested $" + investAmount + " into " + selectedFund + ".");
                         } catch (NumberFormatException e){

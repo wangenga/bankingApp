@@ -28,14 +28,11 @@ public class InvestmentAccount extends Account {
 
     // Total balance is the sum of notInvestedBalance and all investments
     private void updateTotalBalance() {
-        BigDecimal total = notInvestedBalance;
+        BigDecimal investedTotal = investments.values()
+                .stream()
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        for (BigDecimal investedAmount : investments.values()) {
-            total = total.add(investedAmount);
-        }
-
-        // Call setBalance from Account class
-        setBalance(total);
+        setBalance(notInvestedBalance.add(investedTotal));
     }
 
     @Override
@@ -81,24 +78,21 @@ public class InvestmentAccount extends Account {
         }
 
         // Update internal balances
-        this.notInvestedBalance = this.notInvestedBalance.subtract(amount);
+        notInvestedBalance = notInvestedBalance.subtract(amount);
+
         BigDecimal currentInvestment = investments.get(fund);
         investments.put(fund, currentInvestment.add(amount));
-        updateTotalBalance();
+
+        calculateFundGains();
     }
 
     // Calculate gains for each fund based on its appreciation rate
     public void calculateFundGains() {
-        for (Map.Entry<Fund, BigDecimal> entry : investments.entrySet()) {
-            Fund fund = entry.getKey();
-            BigDecimal currentAmount = entry.getValue();
-
-            if (currentAmount.compareTo(BigDecimal.ZERO) > 0) {
-                // Calculate gains then update investment amounts
-                BigDecimal gain = currentAmount.multiply(fund.getAppreciationRate());
-                investments.put(fund, currentAmount.add(gain));
-            }
-        }
+        investments.replaceAll((fund, amount) ->
+                amount.compareTo( BigDecimal.ZERO) > 0
+                        ? amount.add(amount.multiply(fund.getAppreciationRate()))
+                        : amount
+        );
 
         // Update total balance after calculating gains
         updateTotalBalance();
