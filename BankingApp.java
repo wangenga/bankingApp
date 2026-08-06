@@ -1,3 +1,4 @@
+package bankingApp;
 import java.util.Scanner;
 
 import service.BankingService;
