@@ -24,12 +24,12 @@ public class User{
         return cash;
     }
 
-    public SavingsAccount getSavingAccount(){
+    public SavingsAccount getSavingsAccount(){
         return savingsAccount;
     }
 
-    public InvestmentAccount getInvestmentAccount(){
-        return investmentAccount;
-    }
+    //public InvestmentAccount getInvestmentAccount(){
+    //    return investmentAccount;
+    //}
 
 }

@@ -53,7 +53,7 @@ public abstract class Account {
     }
 
     // Allows subclasses to update the balance
-    //  without exposing it publicly.
+    // without exposing it publicly.
     protected void setBalance(BigDecimal newBalance) {
         this.balance = newBalance;
     }

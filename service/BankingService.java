@@ -29,30 +29,72 @@ public class BankingService{
         User currentUser = null;
 
         while (isRunning){
-
+        
+            if (currentUser == null){
+                //System.out.println("Welcome to The Banking App!");
+                //System.out.println("\n");
+                System.out.print("Enter your name to login: ");
+            } else {
+                
+                printMenu();
+                
+            }
             if (!scanner.hasNextLine()){
                 isRunning = false;
                 continue;
             }
-            
+
+            String inputName = scanner.nextLine();
 
             if (currentUser == null){
-                //System.out.println("Welcome to The Banking App!");
-                //System.out.println("\n");
-                System.out.println("Enter your name to login: ");
-                String inputName = scanner.nextLine();
-
+                final String searchName = inputName;
                 currentUser = userList.stream()
-                                    .filter(user -> user.getName().equalsIgnoreCase(inputName.trim()))
+                                    .filter(user -> user.getName().equalsIgnoreCase(searchName.trim()))
                                     .findAny()
                                     .orElse(null);
+
                 if (currentUser == null){
                     System.out.println("User not found");
+                } else {
+                    System.out.println("Welcome " + currentUser.getName() + " !");
                 }
+            } else {
+                int choice = scanner.nextInt();
 
-            }
-            else{
-                printMenu();
+                switch (choice) {
+                    case 1:
+                        System.out.println("Savings: $" + currentUser.getSavingsAccount().getBalance());
+                        break;
+
+                    case 2:
+                        
+                        break;
+                    case 3:
+                        
+                        break;
+                    case 4:
+                        
+                        break;
+                    case 5:
+                        
+                        break;
+                    case 6:
+                        
+                        break;
+                    case 7:
+                        
+                        break;
+                    case 8:
+                        currentUser = null;
+                        break;
+                    case 9:
+                        isRunning = false;
+                        break;
+                
+                    default:
+                        System.out.println("Invalid option. Please try again. ");
+                        break;
+                }
             }
         }
     }
@@ -68,7 +110,6 @@ public class BankingService{
         System.out.println("7. Withdraw all investments");
         System.out.println("8. Logout");
         System.out.println("9. Exit");
+        System.out.print("Enter your choice: ");
     }
-
-     
 }
