@@ -77,6 +77,12 @@ public class BankingService{
 
                         // 3. Loop through the Map to show active funds
                         Map<Fund, BigDecimal> userInvestments = currentUser.getInvestmentAccount().getInvestments();
+
+                        for (Map.Entry<Fund, BigDecimal> entry : userInvestments.entrySet()){
+                            if (entry.getValue().compareTo(BigDecimal.ZERO) > 0){
+                                System.out.println("* " + entry.getKey() + ": $" + entry.getValue().setScale(2));
+                            }
+                        }
                         break;
 
                     case "2":
@@ -164,36 +170,45 @@ public class BankingService{
                         break;
                     case "5":
                         System.out.println("Available funds: ");
+
                         Fund[] allFunds = Fund.values();
-                        for (int i = 0; i < allFunds.length; i++){
-                            System.out.println((i + 1) + ". " + allFunds[i]);
+                        for (Fund fund: allFunds){
+                            System.out.println(fund);
                         }
 
                         System.out.println("Enter fund to invest in: ");
                         String fundChoice = scanner.nextLine().trim();
 
+                        Fund selectedFund = null;
+                        
+                        for (Fund fund: allFunds){
+                            if (fund.name().equalsIgnoreCase(fundChoice)){
+                                selectedFund = fund;
+                                break;
+                            }
+                        }
+
+                        if (selectedFund == null) {
+                            System.out.println("Invalid fund choice");
+                            break;
+                        }
+
+                        System.out.println("Enter Amount to Invest: $");
+                        String investInput = scanner.nextLine().trim();
+
                         try{
-                            int index = Integer.parseInt(fundChoice);
-                            if (index < 1 || index > allFunds.length){
-                                System.out.println("Invalid fund choice");
+                            BigDecimal investAmount = new BigDecimal(investInput);
+                            if (investAmount.compareTo(BigDecimal.ZERO) <= 0){
+                                System.out.println("Failed to invest: amount must be positive");
                                 break;
                             }
 
-                            Fund selectedFund = allFunds[index - 1];
-                            System.out.println("Enter Amount to Invest");
-                            String investInput = scanner.nextLine().trim();
-
-                            BigDecimal investAmount = new BigDecimal(investInput);
-
                             currentUser.getInvestmentAccount().invest(selectedFund, investAmount);
-
-                            
-
-                            System.out.println("Successfully invested $" + investAmount + " into " + selectedFund + ".");
+                            System.out.println("Successfully invested $" + investAmount + " in " + selectedFund + " fund");
                         } catch (NumberFormatException e){
-                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                            System.out.println("Failed to invest: amount must be positive");
                         } catch (InvalidAmountException e){
-                            System.out.println(e.getMessage());
+                            System.out.println("Failed to invest: Insufficient funds");
  
                         }
 
