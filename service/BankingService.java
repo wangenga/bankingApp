@@ -177,6 +177,9 @@ public class BankingService{
                         }
 
                         System.out.print("Enter fund to invest in: ");
+                        if (!scanner.hasNextLine()){
+                            break;
+                        }
                         String fundChoice = scanner.nextLine().trim();
 
                         Fund selectedFund = null;
@@ -189,11 +192,14 @@ public class BankingService{
                         }
 
                         if (selectedFund == null) {
-                            System.out.println("Invalid fund choice");
+                            System.out.println("Invalid fund.");
                             break;
                         }
 
                         System.out.print("Enter amount to invest: $");
+                        if (!scanner.hasNextLine()){
+                            break;
+                        }
                         String investInput = scanner.nextLine().trim();
 
                         try{
