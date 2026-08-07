@@ -239,7 +239,7 @@ public class BankingService{
 
                             BigDecimal tranferAmount = new BigDecimal(tranferInput);
                             if (tranferAmount.compareTo(BigDecimal.ZERO) <= 0){
-                                System.out.println("Tranfer failed: amount must be positive");
+                                System.out.println("Transfer failed: amount must be positive");
                                 break;
                             }
 
