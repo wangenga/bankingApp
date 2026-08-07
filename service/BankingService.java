@@ -89,7 +89,7 @@ public class BankingService{
                             currentUser.getSavingsAccount().deposit(depositAmount);
                             System.out.println("Deposit successful.");
                         } catch (NumberFormatException e){
-                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                            //System.out.println("Invalid Amount. Please enter valid Amount.");
                         } catch (InvalidAmountException e){
                             System.out.println(e.getMessage());
                         }
@@ -105,7 +105,7 @@ public class BankingService{
                             currentUser.getSavingsAccount().withdraw(withdrawAmount);
 
                             currentUser.addCash(withdrawAmount);
-                            System.out.println("Withdraw successful.");
+                            System.out.println("Withdrawal successful.");
                         } catch (NumberFormatException e){
                             System.out.println("Withdrawal failed: amount must be positive");
                         } catch (InvalidAmountException e){
