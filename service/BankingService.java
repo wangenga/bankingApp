@@ -36,6 +36,7 @@ public class BankingService{
                 //System.out.println("Welcome to The Banking App!");
                 //System.out.println("\n");
                 System.out.print("Enter your name to login: ");
+                System.out.flush();
             } else {
                 
                 printMenu();
@@ -56,6 +57,7 @@ public class BankingService{
                                     .orElse(null);
 
                 if (currentUser == null){
+                    System.out.println("User not found. Please try again.");
                     System.out.println("User not found. Please try again.");
                 } else {
                     System.out.println("Welcome, " + currentUser.getName() + "!");
@@ -262,6 +264,7 @@ public class BankingService{
         System.out.println("7. Withdraw all investments");
         System.out.println("8. Logout");
         System.out.println("9. Exit");
-        System.out.print("Enter your choice: \n");
+        System.out.print("Enter your choice: ");
+        System.out.flush();
     }
 }
