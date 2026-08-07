@@ -251,7 +251,7 @@ public class BankingService{
                             } else if (direction.equals("2")){
                                 currentUser.getInvestmentAccount().withdraw(tranferAmount);
                                 currentUser.getSavingsAccount().deposit(tranferAmount);
-                                System.out.println("Transfer to Investment Successful");
+                                System.out.println("Successfully transferred $" + tranferAmount + " to savings account.");
                             }
                         } catch (NumberFormatException e){
                             System.out.println("Transfer failed: amount must be positive");
