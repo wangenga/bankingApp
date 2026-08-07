@@ -146,6 +146,11 @@ public class BankingService{
 
                             BigDecimal sendAmount = new BigDecimal(sendInput);
 
+                            if (sendAmount.compareTo(BigDecimal.ZERO) <= 0){
+                                System.out.println("Failed to send money: amount must be positive");
+                                break;
+                            }
+
                             currentUser.getSavingsAccount().withdraw(sendAmount);
 
                             recipient.getSavingsAccount().deposit(sendAmount);
@@ -153,7 +158,7 @@ public class BankingService{
                         } catch (NumberFormatException e){
                             System.out.println("Failed to send money: amount must be positive");
                         } catch (InvalidAmountException e){
-                            System.out.println(e.getMessage());
+                            System.out.println("Failed to send money: Insufficient funds");
                         }
 
                         break;
@@ -195,23 +200,27 @@ public class BankingService{
                         
                         break;
                     case "6":
-                        System.out.println("1. Transfer from savings to investment ");
-                        System.out.println("2. Transfer from investment to savings ");
+                        System.out.println("1. Transfer from savings to investment");
+                        System.out.println("2. Transfer from investment to savings");
                         System.out.print("Enter your choice: ");
 
                         String direction = scanner.nextLine().trim();
-
-                        if (!direction.equals("1") && !direction.equals("2")){
-                            System.out.println("Invalid choice");
-                            break;
-                        }
-
+                        
                         System.out.print("Enter amount to transfer: $");
                         String tranferInput = scanner.nextLine().trim();
+
+                        if (!direction.equals("1") && !direction.equals("2")){
+                            System.out.println("Invalid choice.");
+                            break;
+                        }
 
                         try{
 
                             BigDecimal tranferAmount = new BigDecimal(tranferInput);
+                            if (tranferAmount.compareTo(BigDecimal.ZERO) <= 0){
+                                System.out.println("Tranfer failed: amount must be positive");
+                                break;
+                            }
 
                             if (direction.equals("1")){
                                 currentUser.getSavingsAccount().withdraw(tranferAmount);
@@ -224,9 +233,9 @@ public class BankingService{
                                 System.out.println("Transfer to Investment Successful");
                             }
                         } catch (NumberFormatException e){
-                            System.out.println("Invalid funds");
+                            System.out.println("Transfer failed: amount must be positive");
                         } catch (InvalidAmountException e){
-                            System.out.println(e.getMessage());
+                            System.out.println("Transfer failed: Insufficient funds");
                         }
 
                         

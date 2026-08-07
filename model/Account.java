@@ -32,7 +32,7 @@ public abstract class Account {
     // Withdraws money from this account. .throws InvalidAmountException if amount is invalid or there are insufficient funds
     public void withdraw(BigDecimal amount) throws InvalidAmountException {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0){
-            throw new InvalidAmountException("Withdrawl failed: amount must be positive");
+            throw new InvalidAmountException("Withdrawal failed: amount must be positive");
         };
 
         if (balance.compareTo(amount) < 0) {
