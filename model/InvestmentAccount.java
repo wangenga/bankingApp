@@ -74,7 +74,7 @@ public class InvestmentAccount extends Account {
         validatePositive(amount, "Investment amount must be positive.");
 
         if (this.notInvestedBalance.compareTo(amount) < 0) {
-            throw new InvalidAmountException("Insufficient funds.");
+            throw new InvalidAmountException("Transfer failed: Insufficient funds.");
         }
 
         // Update internal balances

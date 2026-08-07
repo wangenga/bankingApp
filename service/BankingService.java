@@ -66,23 +66,27 @@ public class BankingService{
                     case "1":
                         System.out.println("Savings account balance: $" + currentUser.getSavingsAccount().getBalance());
                         System.out.println("Investment account balance:");
-    
+
+                        BigDecimal amount = currentUser.getInvestmentAccount()
+                                .getNotInvestedBalance()
+                                .setScale(2);
                         // 2. Show the uninvested cash
-                        System.out.println("* Not Invested: $" + currentUser.getInvestmentAccount().getNotInvestedBalance());
-                        
+                        System.out.println("* Not Invested: $" + amount);
+    
+
                         // 3. Loop through the Map to show active funds
                         Map<Fund, BigDecimal> userInvestments = currentUser.getInvestmentAccount().getInvestments();
                         break;
 
                     case "2":
-                        System.out.print("Enter Amount to deposit to savings account: $");
+                        System.out.print("Enter amount to deposit to savings account: $");
                         String amountInput = scanner.nextLine().trim();
 
                         try{
                             BigDecimal depositAmount = new BigDecimal(amountInput);
                             currentUser.deductCash(depositAmount);
                             currentUser.getSavingsAccount().deposit(depositAmount);
-                            System.out.println("Deposit Successful.");
+                            System.out.println("Deposit successful.");
                         } catch (NumberFormatException e){
                             System.out.println("Invalid Amount. Please enter valid Amount.");
                         } catch (InvalidAmountException e){
@@ -90,7 +94,7 @@ public class BankingService{
                         }
                         break;
                     case "3":
-                        System.out.print("Enter Amount to withdraw from savings account: $");
+                        System.out.print("Enter amount to withdraw from savings account: $");
                         String withdrawInput = scanner.nextLine().trim();
 
                         try{
@@ -100,9 +104,9 @@ public class BankingService{
                             currentUser.getSavingsAccount().withdraw(withdrawAmount);
 
                             currentUser.addCash(withdrawAmount);
-                            System.out.println("Withdraw Successful.");
+                            System.out.println("Withdraw successful.");
                         } catch (NumberFormatException e){
-                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                            System.out.println("Withdrawal failed: amount must be positive");
                         } catch (InvalidAmountException e){
                             System.out.println(e.getMessage());
                         }
@@ -125,7 +129,7 @@ public class BankingService{
                                                 .findAny()
                                                 .orElse(null);
                         if (recipient == null){
-                            System.out.println("User not found. Please try again.");
+                            System.out.println("Invalid recipient.");
                             break;
                         }
 
@@ -144,9 +148,9 @@ public class BankingService{
                             currentUser.getSavingsAccount().withdraw(sendAmount);
 
                             recipient.getSavingsAccount().deposit(sendAmount);
-                            System.out.println("Sent "+ sendAmount + " to " + recipientInput);
+                            System.out.println("Sent $"+ sendAmount + " to " + recipientInput);
                         } catch (NumberFormatException e){
-                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                            System.out.println("Failed to send money: amount must be positive");
                         } catch (InvalidAmountException e){
                             System.out.println(e.getMessage());
                         }
@@ -159,7 +163,7 @@ public class BankingService{
                             System.out.println((i + 1) + ". " + allFunds[i]);
                         }
 
-                        System.out.println("Select a fund to invest in: ");
+                        System.out.println("Enter fund to invest in: ");
                         String fundChoice = scanner.nextLine().trim();
 
                         try{
@@ -190,18 +194,18 @@ public class BankingService{
                         
                         break;
                     case "6":
-                        System.out.println("1. Tranfer from Savings to Investment ");
-                        System.out.println("2. Tranfer from Investment to Savings ");
+                        System.out.println("1. Transfer from savings to investment ");
+                        System.out.println("2. Transfer from investment to savings ");
                         System.out.print("Enter your choice: ");
 
                         String direction = scanner.nextLine().trim();
 
                         if (!direction.equals("1") && !direction.equals("2")){
-                            System.out.println("Invalid direction");
+                            System.out.println("Invalid choice");
                             break;
                         }
 
-                        System.out.print("Enter amount to tranfer: $");
+                        System.out.print("Enter amount to transfer: $");
                         String tranferInput = scanner.nextLine().trim();
 
                         try{
@@ -211,15 +215,15 @@ public class BankingService{
                             if (direction.equals("1")){
                                 currentUser.getSavingsAccount().withdraw(tranferAmount);
                                 currentUser.getInvestmentAccount().deposit(tranferAmount);
-                                System.out.println("Successfully tranferred $" + tranferAmount + " to investment account.");
+                                System.out.println("Successfully transferred $" + tranferAmount + " in fund ");
 
                             } else if (direction.equals("2")){
                                 currentUser.getInvestmentAccount().withdraw(tranferAmount);
                                 currentUser.getSavingsAccount().deposit(tranferAmount);
-                                System.out.println("Tranfer to Investment Successful");
+                                System.out.println("Transfer to Investment Successful");
                             }
                         } catch (NumberFormatException e){
-                            System.out.println("Invalid Amount. Please enter valid Amount.");
+                            System.out.println("Invalid funds");
                         } catch (InvalidAmountException e){
                             System.out.println(e.getMessage());
                         }
@@ -228,12 +232,14 @@ public class BankingService{
                         break;
                     case "7":
                         currentUser.getInvestmentAccount().withdrawAllInvestments();
-                        System.out.println("All your investments have been withdrawn to your uninvested balance ");
+                        System.out.println("All investments have been withdrawn and added to your investment account balance.");
                         break;
                     case "8":
+                        System.out.println("You have been logged out.");
                         currentUser = null;
                         break;
                     case "9":
+                        System.out.println("Thank you for using our banking app. Goodbye!");
                         isRunning = false;
                         break;
                 
@@ -256,6 +262,6 @@ public class BankingService{
         System.out.println("7. Withdraw all investments");
         System.out.println("8. Logout");
         System.out.println("9. Exit");
-        System.out.print("Enter your choice: ");
+        System.out.print("Enter your choice: \n");
     }
 }

@@ -32,7 +32,7 @@ public class User{
 
     public void deductCash (BigDecimal amount) throws InvalidAmountException{
         if (this.cash.compareTo(amount) < 0) {
-            throw new InvalidAmountException("Insufficient Cash");
+            throw new InvalidAmountException("Deposit failed: Insufficient cash on hand");
         }
         this.cash = this.cash.subtract(amount);
     }

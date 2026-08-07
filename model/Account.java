@@ -34,7 +34,7 @@ public abstract class Account {
         validatePositiveAmount(amount);
 
         if (balance.compareTo(amount) < 0) {
-            throw new InvalidAmountException("Insufficient funds.");
+            throw new InvalidAmountException("Withdrawal failed: Insufficient funds");
         }
 
         balance = balance.subtract(amount);
@@ -71,7 +71,7 @@ public abstract class Account {
         }
 
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidAmountException("Amount must be greater than zero.");
+            throw new InvalidAmountException("Deposit failed: amount must be positive");
         }
     }
 }
