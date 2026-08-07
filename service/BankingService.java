@@ -263,7 +263,7 @@ public class BankingService{
         System.out.println("7. Withdraw all investments");
         System.out.println("8. Logout");
         System.out.println("9. Exit");
-        System.out.print("Enter your choice:");
+        System.out.print("Enter your choice: ");
         System.out.flush();
     }
 }
