@@ -225,7 +225,7 @@ public class BankingService{
                             if (direction.equals("1")){
                                 currentUser.getSavingsAccount().withdraw(tranferAmount);
                                 currentUser.getInvestmentAccount().deposit(tranferAmount);
-                                System.out.println("Successfully transferred $" + tranferAmount + " in fund ");
+                                System.out.println("Successfully transferred $" + tranferAmount + " to investment account.");
 
                             } else if (direction.equals("2")){
                                 currentUser.getInvestmentAccount().withdraw(tranferAmount);
