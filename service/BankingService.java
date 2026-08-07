@@ -36,6 +36,7 @@ public class BankingService{
                 //System.out.println("Welcome to The Banking App!");
                 //System.out.println("\n");
                 System.out.print("Enter your name to login: ");
+                System.out.flush();
             } else {
                 
                 printMenu();
@@ -263,5 +264,6 @@ public class BankingService{
         System.out.println("8. Logout");
         System.out.println("9. Exit");
         System.out.print("Enter your choice:");
+        System.out.flush();
     }
 }
