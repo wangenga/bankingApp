@@ -169,7 +169,7 @@ public class BankingService{
 
                         break;
                     case "5":
-                        System.out.println("Available funds: ");
+                        System.out.println("Available funds:");
 
                         Fund[] allFunds = Fund.values();
                         for (Fund fund: allFunds){
@@ -193,7 +193,7 @@ public class BankingService{
                             break;
                         }
 
-                        System.out.print("Enter Amount to Invest: $");
+                        System.out.print("Enter amount to invest: $");
                         String investInput = scanner.nextLine().trim();
 
                         try{
