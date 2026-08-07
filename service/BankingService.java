@@ -264,11 +264,6 @@ public class BankingService{
         System.out.println("7. Withdraw all investments");
         System.out.println("8. Logout");
         System.out.println("9. Exit");
-<<<<<<< HEAD
-        System.out.print("Enter your choice: ");
-        System.out.flush();
-=======
         System.out.print("Enter your choice:");
->>>>>>> 83fa1f4 (Test cases corrections)
     }
 }
