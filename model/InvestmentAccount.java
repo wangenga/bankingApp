@@ -83,7 +83,7 @@ public class InvestmentAccount extends Account {
         BigDecimal currentInvestment = investments.get(fund);
         investments.put(fund, currentInvestment.add(amount));
 
-        calculateFundGains();
+        updateTotalBalance();
     }
 
     // Calculate gains for each fund based on its appreciation rate

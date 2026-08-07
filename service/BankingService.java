@@ -176,7 +176,7 @@ public class BankingService{
                             System.out.println(fund);
                         }
 
-                        System.out.println("Enter fund to invest in: ");
+                        System.out.print("Enter fund to invest in: ");
                         String fundChoice = scanner.nextLine().trim();
 
                         Fund selectedFund = null;
@@ -193,7 +193,7 @@ public class BankingService{
                             break;
                         }
 
-                        System.out.println("Enter Amount to Invest: $");
+                        System.out.print("Enter Amount to Invest: $");
                         String investInput = scanner.nextLine().trim();
 
                         try{
